@@ -30,16 +30,16 @@ public class PostService {
     }
 
     public PostResponse findById(Long postId) {
-        PostEntity entity = postRepository.findById(postId)
+        PostEntity post = postRepository.findById(postId)
                 .orElseThrow(() -> new RuntimeException("해당 게시글이 존재하지 않습니다."));
-        return PostResponse.from(entity);
+        return PostResponse.from(post);
     }
 
     public PostResponse update(Long postId, PostRequest postRequest) {
-        PostEntity entity = postRepository.findById(postId)
+        PostEntity post = postRepository.findById(postId)
                 .orElseThrow(() -> new RuntimeException("해당 게시글이 존재하지 않습니다."));
-        entity.update(postRequest.getTitle(), postRequest.getContent());
-        return PostResponse.from(entity);
+        post.update(postRequest.getTitle(), postRequest.getContent());
+        return PostResponse.from(post);
     }
 
     public void delete(Long postId) {
