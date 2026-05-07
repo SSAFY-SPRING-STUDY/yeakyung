@@ -13,36 +13,37 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class PostService {
-    private final PostRepository pr;
+    private final PostRepository postRepository;
 
     public PostResponse save(PostRequest postRequest) {
-        PostEntity savedEntity = pr.save(postRequest.toEntity());
+        PostEntity savedEntity = postRepository.save(postRequest.toEntity());
         return PostResponse.from(savedEntity);
     }
 
     public List<PostResponse> getAllPosts() {
-        List<PostEntity> postEntities = pr.findAll();
+        List<PostEntity> postEntities = postRepository.findAll();
         List<PostResponse> postResponses = new ArrayList<>();
-        for (PostEntity entity : postEntities)
+        for (PostEntity entity : postEntities) {
             postResponses.add(PostResponse.from(entity));
+        }
         return postResponses;
     }
 
     public PostResponse findById(Long postId) {
-        PostEntity entity = pr.findById(postId)
+        PostEntity entity = postRepository.findById(postId)
                 .orElseThrow(() -> new RuntimeException("해당 게시글이 존재하지 않습니다."));
         return PostResponse.from(entity);
     }
 
     public PostResponse update(Long postId, PostRequest postRequest) {
-        PostEntity entity = pr.update(postId, postRequest.getTitle(), postRequest.getContent())
+        PostEntity entity = postRepository.findById(postId)
                 .orElseThrow(() -> new RuntimeException("해당 게시글이 존재하지 않습니다."));
+        entity.update(postRequest.getTitle(), postRequest.getContent());
         return PostResponse.from(entity);
     }
 
-    public void delete(Long postId){
-
-        pr.deleteById(postId);
+    public void delete(Long postId) {
+        postRepository.deleteById(postId);
     }
 
 }
