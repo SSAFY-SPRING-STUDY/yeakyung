@@ -5,7 +5,7 @@ import com.ssafy.study.member.controller.dto.MemberResponse;
 import com.ssafy.study.member.entity.MemberEntity;
 import com.ssafy.study.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatusCode;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -21,7 +21,7 @@ public class MemberService {
     }
 
     public MemberResponse getMemberInfo(Long memberId) {
-        MemberEntity member = memberRepository.findById(memberId).orElseThrow(() -> new ResponseStatusException(HttpStatusCode.valueOf(404)));
+        MemberEntity member = memberRepository.findById(memberId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NO_CONTENT));
         return MemberResponse.from(member);
     }
 

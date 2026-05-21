@@ -6,7 +6,7 @@ import com.ssafy.study.auth.controller.dto.LoginResponse;
 import com.ssafy.study.member.entity.MemberEntity;
 import com.ssafy.study.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatusCode;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -19,10 +19,10 @@ public class AuthService {
     public LoginResponse login(LoginRequest request) {
         // 아이디(username) 검증
         MemberEntity member = memberRepository.findByUsername(request.username())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatusCode.valueOf(401), "아이디 또는 비밀번호가 일치하지 않습니다."));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "아이디 또는 비밀번호가 일치하지 않습니다."));
         // 비밀번호 검증
         if (!member.checkPassword(request.password())) {
-            throw new ResponseStatusException(HttpStatusCode.valueOf(401), "아이디 또는 비밀번호가 일치하지 않습니다.");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "아이디 또는 비밀번호가 일치하지 않습니다.");
         }
         // 세션 생성
         String sessionKey = sessionManager.createSession(member.getId());
